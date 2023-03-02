@@ -21,9 +21,13 @@ T add_numbers(T const& start, T const& increment, unsigned long int const& steps
 
     for (unsigned long int i = 0; i < steps; ++i)
     {
-
-
-        result += increment;
+        // test for wraparound with unsigned types
+        if (increment > std::numeric_limits<T>::max() - result) {
+            return -1;
+        }
+        else {
+            result += increment;
+        }
     }
 
     // Return the correct value when no overflow happened
@@ -47,7 +51,13 @@ T subtract_numbers(T const& start, T const& decrement, unsigned long int const& 
 
     for (unsigned long int i = 0; i < steps; ++i)
     {
-        result -= decrement;
+        if (decrement > result) {
+            std::cout << "what the heck";
+            return -1;
+        }
+        else {
+            result -= decrement;
+        }
     }
 
     return result;
