@@ -54,7 +54,7 @@ T subtract_numbers(T const& start, T const& decrement, unsigned long int const& 
     {
         // test for underflow
         if (decrement > result) {
-            throw std::invalid_argument("Underflow detected.");
+            throw "Underflow detected.";
         }
         else {
             result -= decrement;
@@ -72,18 +72,6 @@ T subtract_numbers(T const& start, T const& decrement, unsigned long int const& 
 template <typename T>
 void test_overflow()
 {
-    // TODO: The add_numbers template function will overflow in the second method call
-    //
-    //        You need to change the test_overflow method to:
-    //        1. Detect when an add_numbers failed
-    //        2. Inform the user the overflow happened
-    //        3. A successful result displays the same result as before you changed the method
-    //        NOTE: You cannot change anything between START / END DO NOT CHANGE
-    //              The test_overflow method must remain a template in the NumericOverflows source file
-    //
-    //  There are more than one possible solution to this problem. 
-    //  The solution must work for all of the data types used to call test_overflow() in main().
-
     // START DO NOT CHANGE
     //  how many times will we iterate
     const unsigned long int steps = 5;
@@ -117,24 +105,6 @@ void test_overflow()
 template <typename T>
 void test_underflow()
 {
-    // TODO: The subtract_numbers template function will underflow in the second method call
-    //        You need to change the subtract_numbers method to:
-    //        1. Detect when an underflow will happen
-    //        2. Prevent it from happening
-    //        3. Return the correct value when no underflow happened or
-    //        4. Return something to tell test_underflow the subtraction failed
-    //        NOTE: The subtract_numbers method must remain a template in the NumericFunctions header.
-    //
-    //        You need to change the test_underflow method to:
-    //        1. Detect when an subtract_numbers failed
-    //        2. Inform the user the underflow happened
-    //        3. A successful result displays the same result as before you changed the method
-    //        NOTE: You cannot change anything between START / END DO NOT CHANGE
-    //              The test_underflow method must remain a template in the NumericOverflows source file
-    //
-    //  There are more than one possible solution to this problem. 
-    //  The solution must work for all of the data types used to call test_overflow() in main().
-
     // START DO NOT CHANGE
     //  how many times will we iterate
     const unsigned long int steps = 5;
@@ -147,20 +117,28 @@ void test_underflow()
     // END DO NOT CHANGE
 
     std::cout << "\tSubtracting Numbers Without Overflow (" << +start << ", " << +decrement << ", " << steps << ") = ";
-    auto result = subtract_numbers<T>(start, decrement, steps);
-    std::cout << +result << std::endl;
+    try {
+        auto result = subtract_numbers<T>(start, decrement, steps);
+        std::cout << +result << std::endl;
+    }
+    catch(const char* msg) {
+        std::cerr << msg << std::endl;
+    }
 
     std::cout << "\tSubtracting Numbers With Overflow (" << +start << ", " << +decrement << ", " << (steps + 1) << ") = ";
-    result = subtract_numbers<T>(start, decrement, steps + 1);
-    std::cout << +result << std::endl;
+    try {
+        auto result = subtract_numbers<T>(start, decrement, steps + 1);
+        std::cout << +result << std::endl;
+    }
+    catch(const char* msg) {
+        std::cerr << msg << std::endl;
+    }
+   
 }
 
 void do_overflow_tests(const std::string& star_line)
 {
     std::cout << std::endl << star_line << std::endl;
-    unsigned char test = 255;
-    unsigned char test2 = 1;
-    std::cout << test + test2;
     std::cout << "*** Running Overflow Tests ***" << std::endl;
     std::cout << star_line << std::endl;
 
