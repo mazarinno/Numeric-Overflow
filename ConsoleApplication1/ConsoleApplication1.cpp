@@ -22,7 +22,8 @@ T add_numbers(T const& start, T const& increment, unsigned long int const& steps
     for (unsigned long int i = 0; i < steps; ++i)
     {
         // test for wraparound with unsigned types
-        if (increment > std::numeric_limits<T>::max() - result) {
+        if (result > std::numeric_limits<T>::max() - increment) {
+            std::cout << "wat";
             return -1;
         }
         else {
@@ -51,8 +52,9 @@ T subtract_numbers(T const& start, T const& decrement, unsigned long int const& 
 
     for (unsigned long int i = 0; i < steps; ++i)
     {
+        // test for wrapound with unsigned types 
         if (decrement > result) {
-            std::cout << "what the heck";
+            std::cout << "wat";
             return -1;
         }
         else {
