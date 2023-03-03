@@ -3,6 +3,7 @@
 
 #include <iostream>     // std::cout
 #include <limits>       // std::numeric_limits
+#include <stdexcept>
 
 /// <summary>
 /// Template function to abstract away the logic of:
@@ -21,10 +22,9 @@ T add_numbers(T const& start, T const& increment, unsigned long int const& steps
 
     for (unsigned long int i = 0; i < steps; ++i)
     {
-        // test for wraparound with unsigned types
+        // test for overflow
         if (result > std::numeric_limits<T>::max() - increment) {
-            std::cout << "wat";
-            return -1;
+            throw "Overflow detected.";
         }
         else {
             result += increment;
@@ -52,10 +52,9 @@ T subtract_numbers(T const& start, T const& decrement, unsigned long int const& 
 
     for (unsigned long int i = 0; i < steps; ++i)
     {
-        // test for wrapound with unsigned types 
+        // test for underflow
         if (decrement > result) {
-            std::cout << "wat";
-            return -1;
+            throw std::invalid_argument("Underflow detected.");
         }
         else {
             result -= decrement;
@@ -96,13 +95,23 @@ void test_overflow()
     std::cout << "Overflow Test of Type = " << typeid(T).name() << std::endl;
     // END DO NOT CHANGE
 
-    std::cout << "\tAdding Numbers Without Overflow (" << +start << ", " << +increment << ", " << steps << ") = ";
-    T result = add_numbers<T>(start, increment, steps);
-    std::cout << +result << std::endl;
+    std::cout << "\tAdding Numbers Without Overflow (" << +start << ", " << +increment << ", " << steps << ") = "; 
+    try {
+        T result = add_numbers<T>(start, increment, steps);
+        std::cout << +result << std::endl;
+    }
+    catch (const char* msg) {
+        std::cerr << msg << std::endl;
+    }
 
     std::cout << "\tAdding Numbers With Overflow (" << +start << ", " << +increment << ", " << (steps + 1) << ") = ";
-    result = add_numbers<T>(start, increment, steps + 1);
-    std::cout << +result << std::endl;
+    try {
+        T result = add_numbers<T>(start, increment, steps + 1);
+        std::cout << +result << std::endl;
+    }
+    catch (const char* msg) {
+        std::cerr << msg << std::endl;
+    }
 }
 
 template <typename T>
